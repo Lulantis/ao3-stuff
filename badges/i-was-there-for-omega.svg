@@ -50,8 +50,8 @@
   <text text-anchor="middle" fill="white" stroke="black" stroke-width="1" font-size="80" class="title">
     <textPath href="#topText" startOffset="50%">I was there for</textPath>
   </text>
-  <text x="500" y="760" text-anchor="middle" fill="white" stroke="black" stroke-width="3" font-size="180" class="highlight">Ω</text>
-  <text text-anchor="middle" fill="white" stroke="black" stroke-width="1" font-size="55">
+  <text x="500" y="780" text-anchor="middle" fill="white" stroke="black" stroke-width="3" font-size="250" class="highlight">Ω</text>
+  <text text-anchor="middle" fill="white" stroke="black" stroke-width="1" font-size="100">
     <textPath href="#bottomText" startOffset="50%">ωμέγα</textPath>
   </text>
 
