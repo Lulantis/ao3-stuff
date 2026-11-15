@@ -88,9 +88,7 @@
     ];
 
     function random(min, max) {
-      let r = Math.floor(Math.random() * (max - min)) + min;
-      console.log(min, max, r);
-      return r;
+      return  Math.floor(Math.random() * (max - min)) + min;
     }
 
     function randomColor() {
@@ -165,7 +163,9 @@
       }
 
       let elmt = document.getElementById("form");
-      form.innerHTML = str;
+      form.innerHTML = 
+        `<button onclick="apply(template)">Refresh</button>`
+        + str;
     }
 
     let template = `<?xml version="1.0" encoding="UTF-8"?>
