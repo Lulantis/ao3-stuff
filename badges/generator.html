@@ -50,41 +50,52 @@
 
 
   <script>
+    const USE_MULTI_COLOR_BACKGROUND = true;
     let fields = [
-      { parent:"colors", id: "logo", label: "Logo", value: "#14a" },
+      { parent:"colors", id: "logo", label: "Logo", value: "#900" },
       { parent:"colors", id: "text", label: "Text & lines", value: "white" },
       { parent:"colors", id: "border", label: "Text border", value: "black" },
       { parent:"colors", id: "background", label: "Badge", value: "#900" },
       { parent:"colors", id: "shadow", label: "Badge edge", value: "#400" },
       { parent:"colors", id: "spark", label: "Spark", value: "white" },
 
-      { parent:"texts", id: "text1.text", label: "Line 1 text", value: "I was there for" },
-      { parent:"texts", id: "text2.text", label: "Line 2 text", value: "" },
-      { parent:"texts", id: "text3.text", label: "Line 3 text", value: "βετα" },
-      { parent:"texts", id: "text4.text", label: "Line 4 text", value: "(for a bit anyway)" },
+      { parent:"texts", id: "text1.text", label: "Line 1 text", value: "I survived the great" },
+      { parent:"texts", id: "text2.text", label: "Line 2 text", value: "shutdown" },
+      { parent:"texts", id: "text3.text", label: "Line 3 text", value: "of" },
+      { parent:"texts", id: "text4.text", label: "Line 4 text", value: "2026" },
       { parent:"fonts", id: "text1.font", label: "Line 1 font", value: "'Lucida sans', Grande" },
       { parent:"fonts", id: "text2.font", label: "Line 2 font", value: "'Lucida sans', Grande" },
-      { parent:"fonts", id: "text3.font", label: "Line 3 font", value: "Georgia" },
+      { parent:"fonts", id: "text3.font", label: "Line 3 font", value: "'Lucida sans', Grande" },
       { parent:"fonts", id: "text4.font", label: "Line 4 font", value: "Georgia" },
       { parent:"sizes", id: "text1.size", label: "Line 1 size", value: "12em" },
-      { parent:"sizes", id: "text2.size", label: "Line 2 size", value: "8em" },
-      { parent:"sizes", id: "text3.size", label: "Line 3 size", value: "18em" },
-      { parent:"sizes", id: "text4.size", label: "Line 4 size", value: "6em" },
+      { parent:"sizes", id: "text2.size", label: "Line 2 size", value: "14em" },
+      { parent:"sizes", id: "text3.size", label: "Line 3 size", value: "14em" },
+      { parent:"sizes", id: "text4.size", label: "Line 4 size", value: "16em" },
       { parent:"variant", id: "text1.variant", label: "Line 1 variant", value: "small-caps" },
-      { parent:"variant", id: "text2.variant", label: "Line 2 variant", value: "" },
-      { parent:"variant", id: "text3.variant", label: "Line 3 variant", value: "" },
+      { parent:"variant", id: "text2.variant", label: "Line 2 variant", value: "small-caps" },
+      { parent:"variant", id: "text3.variant", label: "Line 3 variant", value: "small-caps" },
       { parent:"variant", id: "text4.variant", label: "Line 4 variant", value: "" },
-      { parent:"lines", id: "line2.y", label: "Line 2 y", value: "250" },
-      { parent:"lines", id: "line3.y", label: "Line 3 y", value: "700" },
+      { parent:"lines", id: "line2.y", label: "Line 2 y", value: "600" },
+      { parent:"lines", id: "line3.y", label: "Line 3 y", value: "730" },
 
       { parent:"circle", id: "lines.radius", label: "Side lines radius", value: "38" },
-      { parent:"circle", id: "lines.start", label: "Side lines start angle", value: "65" },
+      { parent:"circle", id: "lines.start", label: "Side lines start angle", value: "85" },
       { parent:"circle", id: "lines.end", label: "Side lines end angle", value: "140" },
 
       { parent:"logo", id: "logo.size", label: "Logo size", value: "80" },
       { parent:"logo", id: "logo.dx", label: "Logo x", value: "0" },
-      { parent:"logo", id: "logo.dy", label: "Logo y", value: "-10" },
+      { parent:"logo", id: "logo.dy", label: "Logo y", value: "-15" },
     ];
+
+    function random(min, max) {
+      let r = Math.floor(Math.random() * (max - min)) + min;
+      console.log(min, max, r);
+      return r;
+    }
+
+    function randomColor() {
+      return "#" + ((1 << 24) * Math.random() | 0).toString(16).padStart(6, "0");
+    }
 
     function applyValueOf(svg, property) {
       let elmt = document.getElementById(property);
@@ -113,6 +124,23 @@
       svg = svg.replace("{logo.height}", logoSize * 0.56 * 2 / 3);
       svg = svg.replace("{logo.x}", 50 - logoSize * (28 - logoX) / 100);
       svg = svg.replace("{logo.y}", 50 - logoSize * (22 - logoY) / 100);
+
+      if (USE_MULTI_COLOR_BACKGROUND) {
+        let multiGradient = "";
+        let multiCircles = "";
+        for (let i = 1; i <= 10; i++) {
+          multiGradient += `    <radialGradient id="multiRadient_${i}" >
+            <stop offset="5%" stop-color="${randomColor()}" stop-opacity="1" />
+            <stop offset="100%" stop-color="${randomColor()}" stop-opacity="0" />
+          </radialGradient>`;
+          multiCircles += `<circle cx="${random(0, 100)}%" cy="${random(0, 100)}%" r="${random(10, 90)}%" fill="url(#multiRadient_${i})" />`;
+        }
+        svg = svg.replace("{multi-color-gradients}", multiGradient);
+        svg = svg.replace("{multi-color-circles}", multiCircles);
+      }
+      else {
+        svg = svg.replace("{multi-color-gradients}", "");
+      }
 
       document.getElementById("code").innerHTML = svg;
       document.getElementById("preview").innerHTML = svg;
@@ -192,7 +220,7 @@
       --font-family-3: {text3.font};
       --font-size-3: {text3.size};
       --font-variant-3: {text3.variant};
-      --font-stroke-width-3: 4;
+      --font-stroke-width-3: 1;
 
       --font-family-4: {text4.font};
       --font-size-4: {text4.size};
@@ -216,7 +244,7 @@
     /* ----- BADGE ----- */
 
     /* location */
-    .badge circle {
+    .badge > circle {
       cx: 50%;
       cy: 50%;
     }
@@ -343,7 +371,13 @@
       <stop offset="30%" stop-opacity="0.3" />
       <stop offset="60%" stop-opacity="0" />
     </radialGradient>
-    
+
+    <!-- gradients for badge background, multicolor -->
+    <clipPath id="badgeClip">
+      <circle cx="50%" cy="50%" class="background" />
+    </clipPath>
+    {multi-color-gradients}
+
   </defs>
 
   <!-- badge -->
@@ -351,6 +385,9 @@
 
     <!-- background -->
     <circle fill="url(#badge)" class="background" />
+    <g clip-path="url(#badgeClip)">
+      {multi-color-circles}
+    </g>
 
     <!-- lines -->
     <circle class="arc arc-left" pathLength="360" />
